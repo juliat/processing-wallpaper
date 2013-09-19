@@ -1,3 +1,5 @@
+import processing.pdf.*;
+
 int numCircles;
 int radius;
 int outerPadding;
@@ -5,20 +7,26 @@ int diameter;
 int internalPadding;
 color seedColor;
 color backgroundColor;
+int numPages;
 
 void setup() {
+  size(700, 700, PDF, "julia-dots-wallpaper-purple.pdf");
   colorMode(HSB, 360, 100, 100);
   numCircles = 6;
-  size(700, 700);
+  numPages = 4;
   outerPadding = width/10;
   int internalWidth = width - (2*outerPadding);
   diameter = internalWidth/numCircles;
   internalPadding = width/60;
   
-  seedColor = color(140, 65, 75);
+  color green = color(140, 65, 75);
+  color orange = color(8, 80, 92);
+  color purple = color(268, 52, 79);
+  color yellow = color(34, 98, 28);
+  seedColor =  purple;
   
   backgroundColor = color(30, 3, 100);
-  noLoop();
+  // noLoop(); // turn off to record to pdf
 }
 
 void mousePressed() {
@@ -39,6 +47,13 @@ void draw() {
     for (int col = 0; col <= cols; col++) {
       drawCircle(row, col);
     }
+  }
+  
+  PGraphicsPDF pdf = (PGraphicsPDF) g;  // Get the renderer
+  pdf.nextPage();  // Tell it to go to the next page
+  // When finished drawing, quit and save the file
+  if (frameCount == numPages) {
+    exit();
   }
 }
 
